@@ -33,7 +33,7 @@ popupClose.addEventListener('click', function() {
   inputjob.value = pofileJob.textContent;
 })
 
-popupSave.addEventListener('click', function (event) {
+popupSave.addEventListener('submit', function (event) {
   event.preventDefault();
   pofileName.textContent = inputName.value;
   pofileJob.textContent = inputjob.value;
