@@ -1,16 +1,18 @@
-let editBtn = document.querySelector('.profile__edit');
-let popup = document.querySelector('.popup');
+const editBtn = document.querySelector('.profile__edit');
+const popup = document.querySelector('.popup');
 
-let pofileName = document.querySelector('.profile__name');
+const pofileName = document.querySelector('.profile__name');
 
-let pofileJob = document.querySelector('.profile__job');
+const pofileJob = document.querySelector('.profile__job');
 
-let inputName = document.querySelector('.popup__input_type_name');
-let inputjob = document.querySelector('.popup__input_type_job');
+const inputName = document.querySelector('.popup__input_type_name');
+const inputjob = document.querySelector('.popup__input_type_job');
 
-let popupClose = popup.querySelector('.popup__close');
+const popupClose = popup.querySelector('.popup__close');
 
-let popupSave = popup.querySelector('.popup__save');
+const popupSave = popup.querySelector('.popup__save');
+const popupForm = popup.querySelector('.popup__form');
+
 
 inputName.value = pofileName.textContent;
 inputjob.value = pofileJob.textContent;
@@ -33,11 +35,13 @@ popupClose.addEventListener('click', function() {
   inputjob.value = pofileJob.textContent;
 })
 
-popupSave.addEventListener('submit', function (event) {
+function popupSaver(event) {
   event.preventDefault();
   pofileName.textContent = inputName.value;
   pofileJob.textContent = inputjob.value;
   popupCloser(popup);
-})
+};
+
+popupForm.addEventListener('submit', popupSaver);
 
 
