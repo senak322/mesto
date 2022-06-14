@@ -99,7 +99,7 @@ const handleElementSubmit = evt => {
     name: inputPlace.value,
     link: inputLink.value
   }
-  initialCards.push(elem);
+  /*initialCards.push(elem);*/
   addElements(elem);
   closePopup(popupAdd);
   popupFormAdd.reset();
