@@ -1,29 +1,3 @@
-const initialCards = [
-  {
-    name: 'Архыз',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
-  },
-  {
-    name: 'Челябинская область',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-  },
-  {
-    name: 'Иваново',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-  },
-  {
-    name: 'Камчатка',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-  },
-  {
-    name: 'Холмогорский район',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
-  },
-  {
-    name: 'Байкал',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
-  }
-];
 const editBtn = document.querySelector('.profile__edit');
 const popupEdit = document.querySelector('.popup_type_edit');
 
@@ -31,13 +5,13 @@ const pofileName = document.querySelector('.profile__name');
 const pofileJob = document.querySelector('.profile__job');
 
 const inputName = document.querySelector('.popup__input_type_name');
-const inputjob = document.querySelector('.popup__input_type_job');
+const inputJob = document.querySelector('.popup__input_type_job');
 
-const popupClose = popupEdit.querySelector('.popup__close');
-const popupForm = popupEdit.querySelector('.popup__form');
+const popupCloseProfileEdit = popupEdit.querySelector('.popup__close');
+const popupFormProfileEdit = popupEdit.querySelector('.popup__form');
 
-const elements = document.querySelector('.elements');
-const elementsTemplate = elements.querySelector('.elements__template');
+const element = document.querySelector('.elements');
+const elementsTemplate = element.querySelector('.elements__template');
 const profileAddBtn = document.querySelector('.profile__add');
 const popupAdd = document.querySelector('.popup_type_add');
 const popupCloseAdd = document.querySelector('.popup__close_type_add');
@@ -51,25 +25,25 @@ const popupPhotoClose = document.querySelector('.popup__close_type_photo');
 const popupImage = document.querySelector('.popup__image');
 const popupPlace = document.querySelector('.popup__place');
 
-function popupOpener(popupElement) {
-  popupElement.classList.add('popup__isopen');
+function openPopup(popupElement) {
+  popupElement.classList.add('popup_is-open');
 }
 
-const popupPhotoCreate = (el) => {
+const createPopupPhoto = (el) => {
   popupImage.src = el.link
   popupImage.alt = el.name;
   popupPlace.textContent = el.name;
 }
 
 
-const elementsCreate = (el) => {
+const createElements = (el) => {
   const elementsItem = elementsTemplate.content.cloneNode(true);
   const elementsImage = elementsItem.querySelector('.elements__image');
   elementsImage.src = el.link;
   elementsImage.alt = el.name;
   elementsImage.addEventListener('click', () => {
-    popupOpener(popupPhoto);
-    popupPhotoCreate(el);
+    openPopup(popupPhoto);
+    createPopupPhoto(el);
   });
   elementsItem.querySelector('.elements__title').textContent = el.name;
   elementsItem.querySelector('.elements__like').addEventListener('click', function (evt) {
@@ -84,42 +58,42 @@ const elementsCreate = (el) => {
 
 
 const elementsAdd = (el) => {
-  const element = elementsCreate(el);
-  elements.prepend(element);
+  const elem = createElements(el);
+  element.prepend(elem);
 }
 
 initialCards.forEach(elementsAdd);
 
 inputName.value = pofileName.textContent;
-inputjob.value = pofileJob.textContent;
+inputJob.value = pofileJob.textContent;
 
 
 editBtn.addEventListener('click', function() {
-  popupOpener(popupEdit);
+  openPopup(popupEdit);
 });
 
 function popupCloser(popupElement) {
-  popupElement.classList.remove('popup__isopen');
+  popupElement.classList.remove('popup_is-open');
   /*evt.currentTarget.closest('.popup')*/
 }
 
-popupClose.addEventListener('click', function() {
+popupCloseProfileEdit.addEventListener('click', function() {
   popupCloser(popupEdit);
   inputName.value = pofileName.textContent;
-  inputjob.value = pofileJob.textContent;
+  inputJob.value = pofileJob.textContent;
 })
 
 function popupSaver(evt) {
   evt.preventDefault();
   pofileName.textContent = inputName.value;
-  pofileJob.textContent = inputjob.value;
+  pofileJob.textContent = inputJob.value;
   popupCloser(popupEdit);
 };
 
-popupForm.addEventListener('submit', popupSaver);
+popupFormProfileEdit.addEventListener('submit', popupSaver);
 
 profileAddBtn.addEventListener('click', () => {
-  popupOpener(popupAdd);
+  openPopup(popupAdd);
 });
 
 popupCloseAdd.addEventListener('click', () =>  {
