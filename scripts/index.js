@@ -35,6 +35,8 @@ const createPopupPhoto = (el) => {
   popupPlace.textContent = el.name;
 }
 
+const like = (evt) => evt.currentTarget.classList.toggle('elements__like_active');
+const deleteElem = (evt) => evt.currentTarget.closest('.elements__item').remove();
 
 const createElements = (el) => {
   const elementsItem = elementsTemplate.content.cloneNode(true);
@@ -46,58 +48,49 @@ const createElements = (el) => {
     createPopupPhoto(el);
   });
   elementsItem.querySelector('.elements__title').textContent = el.name;
-  elementsItem.querySelector('.elements__like').addEventListener('click', function (evt) {
-    evt.currentTarget.classList.toggle('elements__like_active');
-  });
-  elementsItem.querySelector('.elements__delete').addEventListener('click', function (evt) {
-    evt.currentTarget.closest('.elements__item').remove();
-  });
+  elementsItem.querySelector('.elements__like').addEventListener('click', like);
+  elementsItem.querySelector('.elements__delete').addEventListener('click', deleteElem);
 
   return elementsItem;
 };
 
 
-const elementsAdd = (el) => {
+const addElements = (el) => {
   const elem = createElements(el);
   element.prepend(elem);
 }
 
-initialCards.forEach(elementsAdd);
-
-inputName.value = pofileName.textContent;
-inputJob.value = pofileJob.textContent;
-
+initialCards.forEach(addElements);
 
 editBtn.addEventListener('click', function() {
   openPopup(popupEdit);
+  inputName.value = pofileName.textContent;
+  inputJob.value = pofileJob.textContent;
 });
 
-function popupCloser(popupElement) {
+function closePopup(popupElement) {
   popupElement.classList.remove('popup_is-open');
-  /*evt.currentTarget.closest('.popup')*/
 }
 
 popupCloseProfileEdit.addEventListener('click', function() {
-  popupCloser(popupEdit);
-  inputName.value = pofileName.textContent;
-  inputJob.value = pofileJob.textContent;
+  closePopup(popupEdit);
 })
 
-function popupSaver(evt) {
+function savePopup(evt) {
   evt.preventDefault();
   pofileName.textContent = inputName.value;
   pofileJob.textContent = inputJob.value;
-  popupCloser(popupEdit);
+  closePopup(popupEdit);
 };
 
-popupFormProfileEdit.addEventListener('submit', popupSaver);
+popupFormProfileEdit.addEventListener('submit', savePopup);
 
 profileAddBtn.addEventListener('click', () => {
   openPopup(popupAdd);
 });
 
 popupCloseAdd.addEventListener('click', () =>  {
-  popupCloser(popupAdd);
+  closePopup(popupAdd);
 });
 
 const handleElementSubmit = evt => {
@@ -107,13 +100,14 @@ const handleElementSubmit = evt => {
     link: inputLink.value
   }
   initialCards.push(elem);
-  elementsAdd(elem);
-  popupCloser(popupAdd);
+  addElements(elem);
+  closePopup(popupAdd);
+  popupFormAdd.reset();
 };
 
 popupFormAdd.addEventListener('submit', handleElementSubmit);
 
 popupPhotoClose.addEventListener('click', () =>
-  popupCloser(popupPhoto)
+  closePopup(popupPhoto)
 )
 
