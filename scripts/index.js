@@ -25,107 +25,16 @@ const popupPhotoClose = document.querySelector('.popup__close_type_photo');
 const popupImage = document.querySelector('.popup__image');
 const popupPlace = document.querySelector('.popup__place');
 
-
-
-//const editSaveBtn = document.querySelector('.popup__save');
-//const inputList = Array.from(document.querySelectorAll('.popup__input'));
-const formList = Array.from(document.querySelectorAll('.popup__form'))
-
-const hasInvalidInput = inputList => {
-return inputList.some((inputEl) => {
-  return !inputEl.validity.valid
-  });
-};
-
-const toggleButtonState = (inputEl, buttonEl) => {
-  if (hasInvalidInput(inputEl)) {
-    buttonEl.classList.add('popup__save_type_disabled');
-    buttonEl.setAttribute('disabled', true);
-  } else {
-    buttonEl.classList.remove('popup__save_type_disabled');
-    buttonEl.removeAttribute('disabled');
-  }
-}
-
-// const isButtonActive = () => {
-//   if
-// }
-
-const showInputError = (formEl, inputEl, errorMessage) => {
-  formEl.classList.add('popup__input_type_error');
-  const errorEl = document.querySelector(`.${inputEl.id}-error`);
-  errorEl.classList.add('popup__error_type_active');
-  errorEl.textContent = errorMessage;
-  inputEl.classList.add('popup__input_type_error')
-}
-
-const hideInputError = (formEl, inputEl) => {
-  formEl.classList.remove('popup__input_type_error');
-  const errorEl = document.querySelector(`.${inputEl.id}-error`);
-  errorEl.classList.remove('popup__error_type_active');
-  errorEl.textContent = '';
-  inputEl.classList.remove('popup__input_type_error');
-}
-
-const checkInputValid = (formEl, inputEl) => {
-  if (!inputEl.validity.valid) {
-    showInputError(formEl, inputEl, inputEl.validationMessage);
-  } else {
-    hideInputError(formEl, inputEl);
-  }
-};
-
-const setEventListeners = (formEl) => {
-  const saveBtn = formEl.querySelector('.popup__save');
-  const inputList = Array.from(formEl.querySelectorAll('.popup__input'));
-  hasInvalidInput(inputList);
-  toggleButtonState(inputList, saveBtn);
-  inputList.forEach((inputEl) => {
-    hasInvalidInput(inputList);
-    formEl.addEventListener('input', () => {
-      checkInputValid(formEl, inputEl);
-      toggleButtonState(inputList, saveBtn);
-    });
-  });
-
-};
-
-
-// editSaveBtn.addEventListener('submit', (evt) => {
-//   evt.preventDefault();
-// })
-
-const enableValidation =  /*({
-  formSelector: '.popup__form',
-  inputSelector: '.popup__input',
-  submitButtonSelector: '.popup__save',
-  inactiveButtonClass: 'popup__save_type_disabled',
-  inputErrorClass: 'popup__input_type_error',
-  errorClass: 'popup__error_visible'
-}) */ () => {
-  formList.forEach((formEl) => {
-    setEventListeners(formEl);
-  });
-};
-
-
-enableValidation();
-
-
-
-
-
-
-
-
-
-
-
-
+const popups = document.querySelectorAll('.popup')
+const popupsList = Array.from(popups);
 
 function openPopup(popupElement) {
   popupElement.classList.add('popup_is-open');
-
+  popupElement.addEventListener('keydown', (evt) => {
+    if (evt.keyCode === 27) {
+      closePopup(popupElement);
+    }
+  });
 }
 
 const createPopupPhoto = (el) => {
@@ -161,19 +70,20 @@ const addElements = (el) => {
 
 initialCards.forEach(addElements);
 
-editBtn.addEventListener('click', function() {
+editBtn.addEventListener('click', function () {
   openPopup(popupEdit);
   inputName.value = pofileName.textContent;
   inputJob.value = pofileJob.textContent;
-  enableValidation();
+  enableValidation(settings);
 });
 
 function closePopup(popupElement) {
   popupElement.classList.remove('popup_is-open');
 }
 
-popupCloseProfileEdit.addEventListener('click', function() {
+popupCloseProfileEdit.addEventListener('click', function () {
   closePopup(popupEdit);
+  enableValidation(settings);
 })
 
 function savePopup(evt) {
@@ -189,7 +99,7 @@ profileAddBtn.addEventListener('click', () => {
   openPopup(popupAdd);
 });
 
-popupCloseAdd.addEventListener('click', () =>  {
+popupCloseAdd.addEventListener('click', () => {
   closePopup(popupAdd);
 });
 
@@ -210,4 +120,15 @@ popupFormAdd.addEventListener('submit', handleElementSubmit);
 popupPhotoClose.addEventListener('click', () =>
   closePopup(popupPhoto)
 )
+
+
+
+popupsList.forEach((popupEl) => {
+  popupEl.addEventListener('mousedown', (evt) => {
+    if (evt.target.classList.contains('popup_is-open')) {
+      closePopup(popupEl)
+    }
+  });
+});
+
 
