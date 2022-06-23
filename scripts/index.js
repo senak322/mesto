@@ -11,7 +11,7 @@ const popupCloseProfileEdit = popupEdit.querySelector('.popup__close');
 const popupFormProfileEdit = popupEdit.querySelector('.popup__form');
 
 const element = document.querySelector('.elements');
-const elementsTemplate = element.querySelector('.elements__template');
+const elementsTemplate = document.querySelector('.elements__template');
 const profileAddBtn = document.querySelector('.profile__add');
 const popupAdd = document.querySelector('.popup_type_add');
 const popupCloseAdd = document.querySelector('.popup__close_type_add');
@@ -26,15 +26,25 @@ const popupImage = document.querySelector('.popup__image');
 const popupPlace = document.querySelector('.popup__place');
 
 const popups = document.querySelectorAll('.popup')
+const formList = Array.from(document.querySelectorAll('.popup__form'));
 const popupsList = Array.from(popups);
+
+
+function closePopupEscBtn(evt) {
+  if (evt.keyCode === 27) {
+    const popupIsOpen = document.querySelector('.popup_is-open');
+    closePopup(popupIsOpen)
+  };
+}
 
 function openPopup(popupElement) {
   popupElement.classList.add('popup_is-open');
-  popupElement.addEventListener('keydown', (evt) => {
-    if (evt.keyCode === 27) {
-      closePopup(popupElement);
-    }
-  });
+  document.addEventListener('keydown', closePopupEscBtn)
+}
+
+function closePopup(popupElement) {
+  popupElement.classList.remove('popup_is-open');
+  document.removeEventListener('keydown', closePopupEscBtn);
 }
 
 const createPopupPhoto = (el) => {
@@ -51,14 +61,13 @@ const createElements = (el) => {
   const elementsImage = elementsItem.querySelector('.elements__image');
   elementsImage.src = el.link;
   elementsImage.alt = el.name;
+  elementsItem.querySelector('.elements__title').textContent = el.name;
+  elementsItem.querySelector('.elements__like').addEventListener('click', like);
+  elementsItem.querySelector('.elements__delete').addEventListener('click', deleteElem);
   elementsImage.addEventListener('click', () => {
     openPopup(popupPhoto);
     createPopupPhoto(el);
   });
-  elementsItem.querySelector('.elements__title').textContent = el.name;
-  elementsItem.querySelector('.elements__like').addEventListener('click', like);
-  elementsItem.querySelector('.elements__delete').addEventListener('click', deleteElem);
-
   return elementsItem;
 };
 
@@ -68,40 +77,12 @@ const addElements = (el) => {
   element.prepend(elem);
 }
 
-initialCards.forEach(addElements);
-
-editBtn.addEventListener('click', function () {
-  openPopup(popupEdit);
-  inputName.value = pofileName.textContent;
-  inputJob.value = pofileJob.textContent;
-  enableValidation(settings);
-});
-
-function closePopup(popupElement) {
-  popupElement.classList.remove('popup_is-open');
-}
-
-popupCloseProfileEdit.addEventListener('click', function () {
-  closePopup(popupEdit);
-  enableValidation(settings);
-})
-
 function savePopup(evt) {
   evt.preventDefault();
   pofileName.textContent = inputName.value;
   pofileJob.textContent = inputJob.value;
   closePopup(popupEdit);
 };
-
-popupFormProfileEdit.addEventListener('submit', savePopup);
-
-profileAddBtn.addEventListener('click', () => {
-  openPopup(popupAdd);
-});
-
-popupCloseAdd.addEventListener('click', () => {
-  closePopup(popupAdd);
-});
 
 const handleElementSubmit = evt => {
   evt.preventDefault();
@@ -115,13 +96,39 @@ const handleElementSubmit = evt => {
   popupFormAdd.reset();
 };
 
+
+editBtn.addEventListener('click', function (evt) {
+  openPopup(popupEdit);
+  inputName.value = pofileName.textContent;
+  inputJob.value = pofileJob.textContent;
+  activeButton(popupEdit, settings)
+});
+
+
+popupCloseProfileEdit.addEventListener('click', function () {
+  closePopup(popupEdit);
+})
+
+
+popupFormProfileEdit.addEventListener('submit', savePopup);
+
+profileAddBtn.addEventListener('click', () => {
+  openPopup(popupAdd);
+  disableButton(popupAdd, settings);
+});
+
+popupCloseAdd.addEventListener('click', () => {
+  closePopup(popupAdd);
+});
+
+
 popupFormAdd.addEventListener('submit', handleElementSubmit);
 
 popupPhotoClose.addEventListener('click', () =>
   closePopup(popupPhoto)
 )
 
-
+initialCards.forEach(addElements);
 
 popupsList.forEach((popupEl) => {
   popupEl.addEventListener('mousedown', (evt) => {

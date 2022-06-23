@@ -1,14 +1,3 @@
-const formList = Array.from(document.querySelectorAll('.popup__form'));
-
-const settings = {
-  formSelector: '.popup__form',
-  inputSelector: '.popup__input',
-  submitButtonSelector: '.popup__save',
-  inactiveButtonClass: 'popup__save_type_disabled',
-  inputErrorClass: 'popup__input_type_error',
-  inputErrorActiveClass: 'popup__error_type_active',
-  errorClass: 'popup__error_visible'
-};
 
 const hasInvalidInput = inputList => {
 return inputList.some((inputEl) => {
@@ -16,20 +5,19 @@ return inputList.some((inputEl) => {
   });
 };
 
-const toggleButtonState = (inputEl, buttonEl, setting) => {
+const toggleButtonState = (inputEl, buttonEl, settings) => {
   if (hasInvalidInput(inputEl)) {
-    buttonEl.classList.add(setting.inactiveButtonClass);
+    buttonEl.classList.add(settings.inactiveButtonClass);
     buttonEl.setAttribute('disabled', true);
   } else {
-    buttonEl.classList.remove(setting.inactiveButtonClass);
+    buttonEl.classList.remove(settings.inactiveButtonClass);
     buttonEl.removeAttribute('disabled');
   }
 }
 
 
 const showInputError = (formEl, inputEl, errorMessage, settings) => {
-  formEl.classList.add(settings.inputErrorClass);
-  const errorEl = document.querySelector(`.${inputEl.id}-error`);
+  const errorEl = formEl.querySelector(`.${inputEl.id}-error`);
   errorEl.classList.add(settings.inputErrorActiveClass);
   errorEl.textContent = errorMessage;
   inputEl.classList.add(settings.inputErrorClass);
@@ -60,7 +48,7 @@ const setEventListeners = (formEl, settings) => {
   toggleButtonState(inputList, saveBtn, settings);
   inputList.forEach((inputEl) => {
     hasInvalidInput(inputList);
-    formEl.addEventListener('input', () => {
+    inputEl.addEventListener('input', () => {
       checkInputValid(formEl, inputEl);
       toggleButtonState(inputList, saveBtn, settings);
     });
@@ -70,11 +58,24 @@ const setEventListeners = (formEl, settings) => {
 
 
 const enableValidation = (settings) => {
+  const formList = Array.from(document.querySelectorAll('.popup__form'));
   formList.forEach((formEl) => {
     setEventListeners(formEl, settings);
   });
 };
 
+
+const disableButton = (popupEl, settings) => {
+  const buttonEl = popupEl.querySelector('.popup__save');
+  buttonEl.classList.add(settings.inactiveButtonClass);
+  buttonEl.setAttribute('disabled', true);
+}
+
+const activeButton = (popupEl, settings) => {
+  const buttonEl = popupEl.querySelector('.popup__save');
+  buttonEl.classList.remove(settings.inactiveButtonClass);
+  buttonEl.removeAttribute('disabled');
+}
 
 enableValidation(settings);
 
