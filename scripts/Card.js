@@ -1,9 +1,9 @@
-import { settings } from './data.js';
+import { cardSettings } from './data.js';
 import { openPopup, popupPhoto, popupImage, popupPlace } from './index.js';
 
 class Card {
   constructor(el, template) {
-    this._settings = settings,
+    this._settings = cardSettings,
     this._elementTemplate = document.querySelector(template),
     this._name = el.name,
     this._link = el.link
@@ -22,7 +22,7 @@ class Card {
   _getTemplateElement() {
     this._elementTemplate = this._elementTemplate.content.querySelector(this._settings.elementsItem).cloneNode(true);
     return this._elementTemplate
-  } 
+  }
 
   _openPopupPhoto() {
     popupImage.src = this._link;
