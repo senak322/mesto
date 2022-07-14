@@ -34,11 +34,10 @@ export const settings = {
   inputErrorActiveClass: 'popup__error_type_active',
   errorClass: 'popup__error_visible',
   element: '.elements',
+  elementsItem: '.elements__item',
   elementImage: '.elements__image',
   elementTitle: '.elements__title',
   elementLike: '.elements__like',
   elementLikeActive: 'elements__like_active',
-  elementDelete: '.elements__delete',
-
-
+  elementDelete: '.elements__delete'
 };

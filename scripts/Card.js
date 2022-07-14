@@ -14,15 +14,15 @@ class Card {
   }
 
   _deleteElem() {
-    console.log(this._elementsItem);
+    // console.log(this._elementsItem);
     this._elementsItem.remove();
     this._elementsItem = null;
   }
 
   _getTemplateElement() {
-    this._elementTemplate = this._elementTemplate.content.querySelector('.elements__item').cloneNode(true);
+    this._elementTemplate = this._elementTemplate.content.querySelector(this._settings.elementsItem).cloneNode(true);
     return this._elementTemplate
-  }
+  } 
 
   _openPopupPhoto() {
     popupImage.src = this._link;

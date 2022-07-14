@@ -17,13 +17,13 @@ class FormValidator {
       });
   }
 
-  _toggleButtonState(inputEl, buttonEl) {
+  _toggleButtonState(inputEl) {
     if (this._hasInvalidInput(inputEl)) {
-      buttonEl.classList.add(this._inactiveButtonClass);
-      buttonEl.setAttribute('disabled', true);
+      this._saveBtn.classList.add(this._inactiveButtonClass);
+      this._saveBtn.setAttribute('disabled', true);
     } else {
-      buttonEl.classList.remove(this._inactiveButtonClass);
-      buttonEl.removeAttribute('disabled');
+      this._saveBtn.classList.remove(this._inactiveButtonClass);
+      this._saveBtn.removeAttribute('disabled');
     }
   }
 
