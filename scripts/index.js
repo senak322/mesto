@@ -2,7 +2,7 @@ import {initialCards, settings} from './data.js';
 import Card from './Card.js';
 import FormValidator from './FormValidator.js';
 
-const editBtn = document.querySelector('.profile__edit');
+const profileEditBtn = document.querySelector('.profile__edit');
 const popupEdit = document.querySelector('.popup_type_edit');
 
 const pofileName = document.querySelector('.profile__name');
@@ -29,7 +29,7 @@ const popupPhotoClose = document.querySelector('.popup__close_type_photo');
 export const popupImage = document.querySelector('.popup__image');
 export const popupPlace = document.querySelector('.popup__place');
 
-const cardTemplate = document.querySelector('.elements__template')
+// const cardTemplate = document.querySelector('.elements__template')
 
 const popups = document.querySelectorAll('.popup')
 
@@ -39,7 +39,7 @@ const formValidatorEdit = new FormValidator(settings, popupFormProfileEdit);
 const formValidatorAdd = new FormValidator(settings, popupFormAdd);
 
 function closePopupEscBtn(evt) {
-  if (evt.keyCode === 27) {
+  if (evt.key === 'Escape') {
     const popupIsOpen = document.querySelector('.popup_is-open');
     formValidatorEdit._hideInputError(inputName);
     formValidatorEdit._hideInputError(inputJob);
@@ -60,7 +60,7 @@ function closePopup(popupElement) {
 
 
 const addElements = (el) => {
-  const card = new Card(el, cardTemplate);
+  const card = new Card(el, '.elements__template');
   element.prepend(card.createElements());
 
 }
@@ -86,7 +86,7 @@ const handleElementSubmit = evt => {
 
 
 
-editBtn.addEventListener('click', function (evt) {
+profileEditBtn.addEventListener('click', function (evt) {
   openPopup(popupEdit);
   formValidatorEdit._disableButton();
   inputName.value = pofileName.textContent;

@@ -4,21 +4,23 @@ import { openPopup, popupPhoto, popupImage, popupPlace } from './index.js';
 class Card {
   constructor(el, template) {
     this._settings = settings,
-      this._elementTemplate = template,
-      this._name = el.name,
-      this._link = el.link
+    this._elementTemplate = document.querySelector(template),
+    this._name = el.name,
+    this._link = el.link
   }
 
   _like(evt) {
     evt.currentTarget.classList.toggle(this._settings.elementLikeActive);
   }
 
-  _deleteElem(evt) {
-    evt.currentTarget.closest('.elements__item').remove();
+  _deleteElem() {
+    console.log(this._elementsItem);
+    this._elementsItem.remove();
+    this._elementsItem = null;
   }
 
   _getTemplateElement() {
-    this._elementTemplate = this._elementTemplate.content.cloneNode(true);
+    this._elementTemplate = this._elementTemplate.content.querySelector('.elements__item').cloneNode(true);
     return this._elementTemplate
   }
 
@@ -30,7 +32,7 @@ class Card {
 
   _addEventListeners() {
     this._elementsItem.querySelector(this._settings.elementLike).addEventListener('click', (evt) => {this._like(evt)});
-    this._elementsItem.querySelector(this._settings.elementDelete).addEventListener('click', (evt) => {this._deleteElem(evt)});
+    this._elementsItem.querySelector(this._settings.elementDelete).addEventListener('click', () => {this._deleteElem()});
     this._elementsImage.addEventListener('click', () => {
       openPopup(popupPhoto);
       this._openPopupPhoto();
