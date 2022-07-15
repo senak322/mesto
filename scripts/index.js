@@ -86,9 +86,9 @@ const handleElementSubmit = evt => {
 
 profileEditBtn.addEventListener('click', function (evt) {
   openPopup(popupEdit);
-  formValidatorEdit.resetValidation();
   inputName.value = pofileName.textContent;
   inputJob.value = pofileJob.textContent;
+  formValidatorEdit.resetValidation();
 });
 
 popupCloseProfileEdit.addEventListener('click', function () {
