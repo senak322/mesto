@@ -1,11 +1,11 @@
 import { cardSettings } from './data.js';
-import { openPopup, popupPhoto, popupImage, popupPlace } from './index.js';
+import { popupPhoto } from './index.js';
 
 class Card {
   constructor(el, template) {
     this._settings = cardSettings,
     this._elementTemplate = document.querySelector(template),
-    this._name = el.name,
+    this._name = el.place,
     this._link = el.link
   }
 
@@ -14,7 +14,6 @@ class Card {
   }
 
   _deleteElem() {
-    // console.log(this._elementsItem);
     this._elementsItem.remove();
     this._elementsItem = null;
   }
@@ -24,18 +23,11 @@ class Card {
     return this._elementTemplate
   }
 
-  _openPopupPhoto() {
-    popupImage.src = this._link;
-    popupImage.alt = this._name;
-    popupPlace.textContent = this._name;
-  }
-
   _addEventListeners() {
     this._elementsItem.querySelector(this._settings.elementLike).addEventListener('click', (evt) => {this._like(evt)});
     this._elementsItem.querySelector(this._settings.elementDelete).addEventListener('click', () => {this._deleteElem()});
     this._elementsImage.addEventListener('click', () => {
-      openPopup(popupPhoto);
-      this._openPopupPhoto();
+      popupPhoto.handleCardClick(this._elementsItem);
     });
   }
 

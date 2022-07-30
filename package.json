@@ -1,0 +1,22 @@
+{
+  "name": "mesto",
+  "version": "0.0.1",
+  "description": "* Принципы ООП в JavaScript\r * Модули, классы JS\r * Возможность редактировать информацию на старнице (имя, профессию)\r * Возможность добавлять, лайкать и удалять фотограции на старнице\r * Технологии адаптивной вёрстки\r * flex элементы, Grid Layout\r * Структура файлов создана по системе БЭМ nested.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/senak322/mesto.git"
+  },
+  "author": "Aleksander Vizniy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/senak322/mesto/issues"
+  },
+  "homepage": "https://github.com/senak322/mesto#readme",
+  "dependencies": {
+    "jquery": "^3.6.0"
+  }
+}
