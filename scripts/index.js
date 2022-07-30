@@ -72,6 +72,7 @@ const formValidatorAdd = new FormValidator(validationSettings, popupFormAdd);
 
 profileEditBtn.addEventListener('click', function (evt) {
   popupProfile.open();
+
   inputName.value = pofileName.textContent;
   inputJob.value = pofileJob.textContent;
   formValidatorEdit.resetValidation();
@@ -101,7 +102,9 @@ popupsList.forEach((popupEl) => {
 });
 
 createCard.renderItems();
-
+popupProfile.setEventListeners();
+popupAddPhoto.setEventListeners();
+popupPhoto.setEventListeners();
 
 formValidatorEdit.enableValidation();
 formValidatorAdd.enableValidation();
