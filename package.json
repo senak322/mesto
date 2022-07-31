@@ -18,5 +18,8 @@
   "homepage": "https://github.com/senak322/mesto#readme",
   "dependencies": {
     "jquery": "^3.6.0"
+  },
+  "devDependencies": {
+    "webpack": "^5.74.0"
   }
 }

@@ -1,12 +1,12 @@
 import { cardSettings } from './data.js';
-import { popupPhoto } from './index.js';
 
 class Card {
-  constructor(el, template) {
+  constructor(el, template, handleCardClick) {
     this._settings = cardSettings,
     this._elementTemplate = document.querySelector(template),
     this._name = el.place,
-    this._link = el.link
+    this._link = el.link,
+    this._handleCardClick = handleCardClick
   }
 
   _like(evt) {
@@ -27,7 +27,7 @@ class Card {
     this._elementsItem.querySelector(this._settings.elementLike).addEventListener('click', (evt) => {this._like(evt)});
     this._elementsItem.querySelector(this._settings.elementDelete).addEventListener('click', () => {this._deleteElem()});
     this._elementsImage.addEventListener('click', () => {
-      popupPhoto.handleCardClick(this._elementsItem);
+      this._handleCardClick(this._elementsItem);
     });
   }
 
@@ -45,3 +45,5 @@ class Card {
 }
 
 export default Card;
+
+
