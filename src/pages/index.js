@@ -1,11 +1,11 @@
 import '../pages/index.css';
-import { initialCards, validationSettings } from './data.js';
-import Section from './Section.js';
-import Card from './Card.js';
-import PopupWithForm from './PopupWithForm.js';
-import PopupWithImage from './PopupWithImage.js';
-import FormValidator from './FormValidator.js';
-import UserInfo from './UserInfo.js';
+import { initialCards, validationSettings, cardSettings } from '../components/data.js';
+import Section from '../components/Section.js';
+import Card from '../components/Card.js';
+import PopupWithForm from '../components/PopupWithForm.js';
+import PopupWithImage from '../components/PopupWithImage.js';
+import FormValidator from '../components/FormValidator.js';
+import UserInfo from '../components/UserInfo.js';
 
 const profileEditBtn = document.querySelector('.profile__edit');
 const popupEdit = document.querySelector('.popup_type_edit');
@@ -26,12 +26,12 @@ const handleCardClick = (el) => {
 }
 
 const addCard = (values) => {
-  const card = new Card(values, '.elements__template', handleCardClick)
+  const card = new Card(values, '.elements__template', handleCardClick, cardSettings)
   return card.createElements()
 }
 
 const sectionRenderer = (el) => {
-  const card = new Card(el, '.elements__template', handleCardClick);
+  const card = new Card(el, '.elements__template', handleCardClick, cardSettings);
   const cardEl = card.createElements();
   createCard.addItem(cardEl);
 }

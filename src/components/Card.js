@@ -1,7 +1,7 @@
-import { cardSettings } from './data.js';
+// import { cardSettings } from './data.js';
 
 class Card {
-  constructor(el, template, handleCardClick) {
+  constructor(el, template, handleCardClick, cardSettings) {
     this._settings = cardSettings,
     this._elementTemplate = document.querySelector(template),
     this._name = el.place,
