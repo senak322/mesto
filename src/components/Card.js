@@ -27,7 +27,7 @@ class Card {
     this._elementsItem.querySelector(this._settings.elementLike).addEventListener('click', (evt) => {this._like(evt)});
     this._elementsItem.querySelector(this._settings.elementDelete).addEventListener('click', () => {this._deleteElem()});
     this._elementsImage.addEventListener('click', () => {
-      this._handleCardClick(this._elementsItem);
+      this._handleCardClick(this._name, this._link);
     });
   }
 
