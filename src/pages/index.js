@@ -66,14 +66,9 @@ profileEditBtn.addEventListener('click', function () {
 });
 
 
-
 profileAddBtn.addEventListener('click', () => {
   popupAddPhoto.open();
   formValidatorAdd.resetValidation()
-});
-
-popupCloseAdd.addEventListener('click', () => {
-  popupAddPhoto.close();
 });
 
 
