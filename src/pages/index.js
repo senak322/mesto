@@ -1,3 +1,16 @@
+// const res = fetch('https://nomoreparties.co/v1/cohort-50/users/me', {
+//   headers: {
+//     authorization: '83d4c574-f43f-43fb-a250-62d63411e3fe'
+//   }
+// })
+//   .then(res => res.json())
+//   // .then((result) => {
+//   //   console.log(result.name);
+//   // });
+
+// console.log(res);
+
+
 import '../pages/index.css';
 import { initialCards, validationSettings, cardSettings } from '../components/data.js';
 import Section from '../components/Section.js';
@@ -6,16 +19,24 @@ import PopupWithForm from '../components/PopupWithForm.js';
 import PopupWithImage from '../components/PopupWithImage.js';
 import FormValidator from '../components/FormValidator.js';
 import UserInfo from '../components/UserInfo.js';
+import Api from '../components/Api.js';
 
 const profileEditBtn = document.querySelector('.profile__edit');
 const popupEdit = document.querySelector('.popup_type_edit');
 const inputName = document.querySelector('.popup__input_type_name');
 const inputJob = document.querySelector('.popup__input_type_job');
-const popupCloseProfileEdit = popupEdit.querySelector('.popup__close');
 const popupFormProfileEdit = popupEdit.querySelector('.popup__form');
 const profileAddBtn = document.querySelector('.profile__add');
-const popupCloseAdd = document.querySelector('.popup__close_type_add');
 const popupFormAdd = document.querySelector('.popup__form_type_add');
+
+const popupPhoto = new PopupWithImage('.popup_type_photo');
+const popupProfile = new PopupWithForm('.popup_type_edit', handleEditSubmit);
+const popupAddPhoto = new PopupWithForm('.popup_type_add', handleElementAddSubmit);
+const userInfo = new UserInfo({nameSelector: '.profile__name', jobSelector: '.profile__job', imgSelector: '.profile__foto'});
+const api = new Api('https://nomoreparties.co', '83d4c574-f43f-43fb-a250-62d63411e3fe');
+
+const formValidatorEdit = new FormValidator(validationSettings, popupFormProfileEdit);
+const formValidatorAdd = new FormValidator(validationSettings, popupFormAdd);
 
 
 const handleCardClick = (name, link) => {
@@ -32,10 +53,14 @@ const sectionRenderer = (el) => {
   createCard.addItem(cardEl);
 }
 
+console.log(api.getImages());
+
+
 const createCard = new Section({
   items: initialCards,
   renderer: sectionRenderer
 }, '.elements');
+
 
 const handleElementAddSubmit = (values) => {
   const card = addCard(values);
@@ -48,20 +73,24 @@ const handleEditSubmit = (values) => {
   popupProfile.close();
 }
 
-const popupPhoto = new PopupWithImage('.popup_type_photo');
-const popupProfile = new PopupWithForm('.popup_type_edit', handleEditSubmit);
-const popupAddPhoto = new PopupWithForm('.popup_type_add', handleElementAddSubmit);
-const userInfo = new UserInfo({nameSelector: '.profile__name', jobSelector: '.profile__job'});
 
+const setNewInfo = () => {
+  return api.getProfileInfo().then(res => {
+    const newInfo = {
+      name: res.name,
+      job: res.about,
+      avatar: res.avatar
+    }
+    userInfo.setUserInfo(newInfo)
+})}
 
-const formValidatorEdit = new FormValidator(validationSettings, popupFormProfileEdit);
-const formValidatorAdd = new FormValidator(validationSettings, popupFormAdd);
+setNewInfo()
 
 
 profileEditBtn.addEventListener('click', function () {
   popupProfile.open();
-  inputName.value = userInfo.getUserInfo().name;
-  inputJob.value = userInfo.getUserInfo().job;
+  api.getProfileInfo().then(data => {return inputName.value = data.name})
+  api.getProfileInfo().then(data => {return inputJob.value = data.about})
   formValidatorEdit.resetValidation();
 });
 
