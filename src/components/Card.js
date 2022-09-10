@@ -4,7 +4,7 @@ class Card {
   constructor(el, template, handleCardClick, cardSettings) {
     this._settings = cardSettings,
     this._elementTemplate = document.querySelector(template),
-    this._name = el.place,
+    this._name = el.name,
     this._link = el.link,
     this._handleCardClick = handleCardClick
   }
