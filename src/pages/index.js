@@ -1,12 +1,13 @@
 
 
 import '../pages/index.css';
-import { initialCards, validationSettings, cardSettings } from '../components/data.js';
+import { validationSettings, cardSettings } from '../components/data.js';
 import Section from '../components/Section.js';
 import Card from '../components/Card.js';
 import PopupWithForm from '../components/PopupWithForm.js';
 import PopupWithImage from '../components/PopupWithImage.js';
 import FormValidator from '../components/FormValidator.js';
+import PopupWithDelete from '../components/PopupWithDelete';
 import UserInfo from '../components/UserInfo.js';
 import Api from '../components/Api.js';
 
@@ -18,10 +19,17 @@ const popupFormProfileEdit = popupEdit.querySelector('.popup__form');
 const profileAddBtn = document.querySelector('.profile__add');
 const popupFormAdd = document.querySelector('.popup__form_type_add');
 
+
 const api = new Api('https://nomoreparties.co', '83d4c574-f43f-43fb-a250-62d63411e3fe');
 
+function handleElementDelete (item) {
+  const popupDelete = new PopupWithDelete('.popup_type_delete', item);
+  popupDelete.open();
+  popupDelete.setEventListeners(item)
+};
+
 const addCard = (values) => {
-  const card = new Card(values, '.elements__template', handleCardClick, cardSettings)
+  const card = new Card(values, '.elements__template', handleCardClick, cardSettings, handleElementDelete)
   return card.createElements()
 }
 
@@ -51,9 +59,11 @@ const handleElementAddSubmit = (values) => {
   popupAddPhoto.close();
 };
 
-const popupPhoto = new PopupWithImage('.popup_type_photo');
 
+
+const popupPhoto = new PopupWithImage('.popup_type_photo');
 const popupAddPhoto = new PopupWithForm('.popup_type_add', handleElementAddSubmit);
+
 const userInfo = new UserInfo({nameSelector: '.profile__name', jobSelector: '.profile__job', imgSelector: '.profile__foto'});
 
 const popupProfile = new PopupWithForm('.popup_type_edit', handleEditSubmit);
