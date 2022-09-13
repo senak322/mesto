@@ -1,5 +1,4 @@
 
-
 import '../pages/index.css';
 import { validationSettings, cardSettings } from '../components/data.js';
 import Section from '../components/Section.js';
@@ -22,14 +21,21 @@ const popupFormAdd = document.querySelector('.popup__form_type_add');
 
 const api = new Api('https://nomoreparties.co', '83d4c574-f43f-43fb-a250-62d63411e3fe');
 
-function handleElementDelete (item) {
-  const popupDelete = new PopupWithDelete('.popup_type_delete', item);
+function handleDelete() {
+  api.deleteCard(this._cardId);
+  this._item.remove();
+  this._item = null;
+  this.close();
+}
+
+function handleElementDelete (item, cardId) {
   popupDelete.open();
-  popupDelete.setEventListeners(item)
+  popupDelete.setElem(item, cardId)
+
 };
 
 const addCard = (values) => {
-  const card = new Card(values, '.elements__template', handleCardClick, cardSettings, handleElementDelete)
+  const card = new Card(values, '.elements__template', handleCardClick, cardSettings, handleElementDelete, '7f1f5eb28cfd1a3c985ee513')
   return card.createElements()
 }
 
@@ -51,10 +57,8 @@ const handleEditSubmit = (values) => {
 
 const handleElementAddSubmit = (values) => {
   api.addCard(values).then(res => {
-    console.log(res);
     const card = addCard(res);
     createCard.addItem(card);
-
   })
   popupAddPhoto.close();
 };
@@ -67,6 +71,7 @@ const popupAddPhoto = new PopupWithForm('.popup_type_add', handleElementAddSubmi
 const userInfo = new UserInfo({nameSelector: '.profile__name', jobSelector: '.profile__job', imgSelector: '.profile__foto'});
 
 const popupProfile = new PopupWithForm('.popup_type_edit', handleEditSubmit);
+const popupDelete = new PopupWithDelete('.popup_type_delete', handleDelete);
 
 const formValidatorEdit = new FormValidator(validationSettings, popupFormProfileEdit);
 const formValidatorAdd = new FormValidator(validationSettings, popupFormAdd);
@@ -106,7 +111,7 @@ profileAddBtn.addEventListener('click', () => {
 });
 
 
-
+popupDelete.setEventListeners();
 popupProfile.setEventListeners();
 popupAddPhoto.setEventListeners();
 popupPhoto.setEventListeners();

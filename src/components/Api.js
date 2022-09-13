@@ -91,6 +91,28 @@ export default class Api {
       console.log(err);
     })
   }
+
+  deleteCard(cardId) {
+    return fetch(`${this._url}/v1/cohort-50/cards/${cardId}`, {
+      method: 'DELETE',
+      headers: {
+        authorization: this._token,
+        'Content-Type': 'application/json'
+      }
+
+    })
+    .then((res) =>{
+      if (res.ok) {
+        return res.json()
+      }
+      else {
+        return new Error('Ошибка')
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+  }
 }
 
 
