@@ -19,6 +19,7 @@ const profileAddBtn = document.querySelector('.profile__add');
 const popupFormAdd = document.querySelector('.popup__form_type_add');
 
 
+
 const api = new Api('https://nomoreparties.co', '83d4c574-f43f-43fb-a250-62d63411e3fe');
 
 function handleDelete() {
@@ -34,8 +35,28 @@ function handleElementDelete (item, cardId) {
 
 };
 
+function editLikeCounter(item, likesCount) {
+  item.querySelector('.elements__counter').textContent = likesCount
+}
+
+function handleLikeCard (cardId, item) {
+  api.likeCard(cardId)
+    .then(res => {
+      editLikeCounter(item, res.likes.length)
+      console.log(res);
+    })
+}
+
+function handleUnLikeCard (cardId, item) {
+  api.unLikeCard(cardId)
+    .then(res => {
+      editLikeCounter(item, res.likes.length)
+      console.log(res);
+  })
+}
+
 const addCard = (values) => {
-  const card = new Card(values, '.elements__template', handleCardClick, cardSettings, handleElementDelete, '7f1f5eb28cfd1a3c985ee513')
+  const card = new Card(values, '.elements__template', handleCardClick, cardSettings, handleElementDelete, '7f1f5eb28cfd1a3c985ee513', handleLikeCard, handleUnLikeCard)
   return card.createElements()
 }
 
@@ -99,8 +120,8 @@ api.getProfileInfo().then(res => {
 
 profileEditBtn.addEventListener('click', function () {
   popupProfile.open();
-  api.getProfileInfo().then(data => {return inputName.value = data.name})
-  api.getProfileInfo().then(data => {return inputJob.value = data.about})
+  api.getProfileInfo().then(data => {inputName.value = data.name; inputJob.value = data.about})
+  // api.getProfileInfo().then(data => {return inputJob.value = data.about})
   formValidatorEdit.resetValidation();
 });
 
