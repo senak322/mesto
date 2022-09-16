@@ -18,6 +18,9 @@
       <section class="profile">
         <div class="profile__user-info">
           <img class="profile__foto" alt="фото профиля">
+          <div class="profile__foto profile__foto_type_overlay">
+            <img class="profile__pen" src="<%=require('./pictures/penfoto.svg')%>">
+          </div>
           <div class="profile__info">
             <div class="profile__container">
               <h1 class="profile__name"></h1>
@@ -60,7 +63,7 @@
       <form class="popup__form popup__form_type_add" action="#" name="add-cards" novalidate>
         <input class="popup__input popup__input_type_place" id="place" name="place" type="text" placeholder="Название" required minlength="2" maxlength="30">
         <span class="popup__error place-error"></span>
-        <input class="popup__input popup__input_type_link" id="link" name="link" type="url" placeholder="Ссылка на кратинку" required>
+        <input class="popup__input popup__input_type_link" id="link" name="link" type="url" placeholder="Ссылка на картинку" required>
         <span class="popup__error popup__error_type_active link-error"></span>
         <button class="popup__save popup__save_type_add" type="submit">Создать</button>
       </form>
@@ -73,6 +76,19 @@
         Вы&nbsp;уверены?
       </h3>
       <button class="popup__save popup__save_type_delete" type="button">Да</button>
+    </div>
+  </div>
+  <div class="popup popup_type_avatar">
+    <div class="popup__content popup__content_type_avatar">
+      <button type="button" class="popup__close"></button>
+      <h3 class="popup__title popup__title_type_avatar">
+        Обновить&nbsp;аватар
+      </h3>
+      <form class="popup__form" action="#" name="edit-profile" novalidate>
+        <input class="popup__input popup__input_type_link" id="link" name="link" type="url" placeholder="Ссылка на фото" required>
+        <span class="popup__error name-error"></span>
+        <button class="popup__save popup__save_type_delete" type="submit">Сохранить</button>
+      </form>
     </div>
   </div>
   <div class="popup popup_type_photo">
