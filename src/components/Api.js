@@ -157,6 +157,8 @@ export default class Api {
       console.log(err);
     })
   }
+
+ 
 }
 
 

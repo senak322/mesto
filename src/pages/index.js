@@ -19,8 +19,8 @@ const profileAddBtn = document.querySelector('.profile__add');
 const popupFormAdd = document.querySelector('.popup__form_type_add');
 
 
-
 const api = new Api('https://nomoreparties.co', '83d4c574-f43f-43fb-a250-62d63411e3fe');
+
 
 function handleDelete() {
   api.deleteCard(this._cardId);
@@ -29,34 +29,27 @@ function handleDelete() {
   this.close();
 }
 
-function handleElementDelete (item, cardId) {
+function handleElementDelete(item, cardId) {
   popupDelete.open();
   popupDelete.setElem(item, cardId)
-
 };
 
-function editLikeCounter(item, likesCount) {
-  item.querySelector('.elements__counter').textContent = likesCount
-}
-
-function handleLikeCard (cardId, item) {
-  api.likeCard(cardId)
-    .then(res => {
-      editLikeCounter(item, res.likes.length)
-      console.log(res);
-    })
-}
-
-function handleUnLikeCard (cardId, item) {
-  api.unLikeCard(cardId)
-    .then(res => {
-      editLikeCounter(item, res.likes.length)
-      console.log(res);
-  })
-}
 
 const addCard = (values) => {
-  const card = new Card(values, '.elements__template', handleCardClick, cardSettings, handleElementDelete, '7f1f5eb28cfd1a3c985ee513', handleLikeCard, handleUnLikeCard)
+  const card = new Card(values, '.elements__template', handleCardClick, cardSettings, handleElementDelete, '7f1f5eb28cfd1a3c985ee513', {
+    handleLikeCard: () => {
+      return api.likeCard(card._cardId)
+        .then(res => {
+          card.addLike(res)
+        })
+    },
+    handleUnLikeCard: () => {
+      return api.unLikeCard(card._cardId)
+        .then(res => {
+          card.deleteLike(res)
+        })
+    }
+  })
   return card.createElements()
 }
 
@@ -64,7 +57,6 @@ const sectionRenderer = (el) => {
   const cardEl = addCard(el)
   createCard.addItem(cardEl);
 }
-
 
 const createCard = new Section({
   renderer: sectionRenderer
@@ -85,11 +77,10 @@ const handleElementAddSubmit = (values) => {
 };
 
 
-
 const popupPhoto = new PopupWithImage('.popup_type_photo');
 const popupAddPhoto = new PopupWithForm('.popup_type_add', handleElementAddSubmit);
 
-const userInfo = new UserInfo({nameSelector: '.profile__name', jobSelector: '.profile__job', imgSelector: '.profile__foto'});
+const userInfo = new UserInfo({ nameSelector: '.profile__name', jobSelector: '.profile__job', imgSelector: '.profile__foto' });
 
 const popupProfile = new PopupWithForm('.popup_type_edit', handleEditSubmit);
 const popupDelete = new PopupWithDelete('.popup_type_delete', handleDelete);
@@ -108,19 +99,19 @@ api.getImages().then(data => {
 
 
 api.getProfileInfo().then(res => {
-    const newInfo = {
-      name: res.name,
-      job: res.about,
-      avatar: res.avatar
-    }
-    userInfo.setUserInfo(newInfo)
-    userInfo.setAvatar(newInfo)
+  const newInfo = {
+    name: res.name,
+    job: res.about,
+    avatar: res.avatar
+  }
+  userInfo.setUserInfo(newInfo)
+  userInfo.setAvatar(newInfo)
 })
 
 
 profileEditBtn.addEventListener('click', function () {
   popupProfile.open();
-  api.getProfileInfo().then(data => {inputName.value = data.name; inputJob.value = data.about})
+  api.getProfileInfo().then(data => { inputName.value = data.name; inputJob.value = data.about })
   // api.getProfileInfo().then(data => {return inputJob.value = data.about})
   formValidatorEdit.resetValidation();
 });
