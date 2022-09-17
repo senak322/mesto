@@ -3,6 +3,10 @@
   height: 282px;
   cursor: pointer;
   object-fit: cover;
+  transition: 0.3s ease-in;
 }
 
+.elements__image:hover {
+  transform: scale(1.05);
+}
 

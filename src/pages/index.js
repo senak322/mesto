@@ -6,7 +6,8 @@ import Card from '../components/Card.js';
 import PopupWithForm from '../components/PopupWithForm.js';
 import PopupWithImage from '../components/PopupWithImage.js';
 import FormValidator from '../components/FormValidator.js';
-import PopupWithDelete from '../components/PopupWithDelete';
+import PopupWithDelete from '../components/PopupWithDelete.js';
+import PopupWithAvatar from '../components/PopupWithAvatar.js'
 import UserInfo from '../components/UserInfo.js';
 import Api from '../components/Api.js';
 
@@ -17,6 +18,9 @@ const inputJob = document.querySelector('.popup__input_type_job');
 const popupFormProfileEdit = popupEdit.querySelector('.popup__form');
 const profileAddBtn = document.querySelector('.profile__add');
 const popupFormAdd = document.querySelector('.popup__form_type_add');
+const popupFormAvatar = document.querySelector('.popup__form_type_avatar');
+const profileOvelay = document.querySelector('.profile__foto_type_overlay');
+
 
 
 const api = new Api('https://nomoreparties.co', '83d4c574-f43f-43fb-a250-62d63411e3fe');
@@ -34,20 +38,24 @@ function handleElementDelete(item, cardId) {
   popupDelete.setElem(item, cardId)
 };
 
+function handleAddAvatar(value) {
+  api.setAvatar(value).then(res => {
+    userInfo.setAvatar(res);
+    popupAvatar.close();
+    formValidatorAvatar.resetValidation()
+  })
+}
+
 
 const addCard = (values) => {
   const card = new Card(values, '.elements__template', handleCardClick, cardSettings, handleElementDelete, '7f1f5eb28cfd1a3c985ee513', {
     handleLikeCard: () => {
       return api.likeCard(card._cardId)
-        .then(res => {
-          card.addLike(res)
-        })
+        .then(res => {card.addLike(res)})
     },
     handleUnLikeCard: () => {
       return api.unLikeCard(card._cardId)
-        .then(res => {
-          card.deleteLike(res)
-        })
+        .then(res => {card.deleteLike(res)})
     }
   })
   return card.createElements()
@@ -84,9 +92,11 @@ const userInfo = new UserInfo({ nameSelector: '.profile__name', jobSelector: '.p
 
 const popupProfile = new PopupWithForm('.popup_type_edit', handleEditSubmit);
 const popupDelete = new PopupWithDelete('.popup_type_delete', handleDelete);
+const popupAvatar = new PopupWithAvatar('.popup_type_avatar', handleAddAvatar);
 
 const formValidatorEdit = new FormValidator(validationSettings, popupFormProfileEdit);
 const formValidatorAdd = new FormValidator(validationSettings, popupFormAdd);
+const formValidatorAvatar = new FormValidator(validationSettings, popupFormAvatar);
 
 
 const handleCardClick = (name, link) => {
@@ -111,8 +121,10 @@ api.getProfileInfo().then(res => {
 
 profileEditBtn.addEventListener('click', function () {
   popupProfile.open();
-  api.getProfileInfo().then(data => { inputName.value = data.name; inputJob.value = data.about })
-  // api.getProfileInfo().then(data => {return inputJob.value = data.about})
+  api.getProfileInfo().then(data => {
+    inputName.value = data.name;
+    inputJob.value = data.about
+  })
   formValidatorEdit.resetValidation();
 });
 
@@ -122,11 +134,18 @@ profileAddBtn.addEventListener('click', () => {
   formValidatorAdd.resetValidation()
 });
 
+profileOvelay.addEventListener('click', () => {
+  popupAvatar.open()
+})
+
 
 popupDelete.setEventListeners();
 popupProfile.setEventListeners();
 popupAddPhoto.setEventListeners();
 popupPhoto.setEventListeners();
+popupAvatar.setEventListeners();
+
 
 formValidatorEdit.enableValidation();
 formValidatorAdd.enableValidation();
+formValidatorAvatar.enableValidation();
