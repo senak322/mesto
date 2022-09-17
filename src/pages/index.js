@@ -25,6 +25,15 @@ const profileOvelay = document.querySelector('.profile__foto_type_overlay');
 
 const api = new Api('https://nomoreparties.co', '83d4c574-f43f-43fb-a250-62d63411e3fe');
 
+// function renderLoading(isLoading) {
+//   if (isLoading) {
+//     spinner.classList.add('spinner_visible');
+//     content.classList.add('content_hidden');
+//   } else if (!isLoading) {
+//     content.classList.remove('content_hidden');
+//     spinner.classList.remove('spinner_visible');
+//   }
+// }
 
 function handleDelete() {
   api.deleteCard(this._cardId);
@@ -39,11 +48,12 @@ function handleElementDelete(item, cardId) {
 };
 
 function handleAddAvatar(value) {
+  popupAvatar.saving(true)
   api.setAvatar(value).then(res => {
     userInfo.setAvatar(res);
     popupAvatar.close();
     formValidatorAvatar.resetValidation()
-  })
+  }).finally(() => {popupAvatar.saving(false)})
 }
 
 
@@ -71,16 +81,18 @@ const createCard = new Section({
 }, '.elements');
 
 const handleEditSubmit = (values) => {
-  api.editInfo(values)
+  popupProfile.saving(true)
+  api.editInfo(values).finally(()=>{popupProfile.saving(false)})
   userInfo.setUserInfo(values)
   popupProfile.close();
 }
 
 const handleElementAddSubmit = (values) => {
+  popupAddPhoto.saving(true)
   api.addCard(values).then(res => {
     const card = addCard(res);
     createCard.addItem(card);
-  })
+  }).finally(()=> {popupAddPhoto.saving(false)})
   popupAddPhoto.close();
 };
 
@@ -149,3 +161,5 @@ popupAvatar.setEventListeners();
 formValidatorEdit.enableValidation();
 formValidatorAdd.enableValidation();
 formValidatorAvatar.enableValidation();
+
+// Promise.all()

@@ -6,7 +6,15 @@ export default class PopupWithAvatar extends Popup {
     this._handleAddAvatar = handleAddAvatar;
     this._form = this.popup.querySelector('.popup__form_type_avatar');
     this._input = this._form.querySelector('.popup__input')
+    this._saveBtn = this._form.querySelector('.popup__save')
+  }
 
+  saving(isSaving) {
+    if (isSaving) {
+      this._saveBtn.textContent = 'Сохранение...'
+    } else {
+      this._saveBtn.textContent = 'Сохранить'
+    }
   }
 
   _getInputValues() {

@@ -15,7 +15,7 @@ export default class Api {
         return res.json()
       }
       else {
-        return new Error('Ошибка')
+        return Promise.reject(`Ошибка: ${res.status}`);
       }
     })
     .catch((err) => {
@@ -33,7 +33,7 @@ export default class Api {
       if (res.ok){
         return res.json()
       } else {
-        return new Error('Ошибка')
+        return Promise.reject(`Ошибка: ${res.status}`);
       }
     })
 
@@ -59,7 +59,7 @@ export default class Api {
         return res.json()
       }
       else {
-        return new Error('Ошибка')
+        return Promise.reject(`Ошибка: ${res.status}`);
       }
     })
     .catch((err) => {
@@ -84,7 +84,7 @@ export default class Api {
         return res.json()
       }
       else {
-        return new Error('Ошибка')
+        return Promise.reject(`Ошибка: ${res.status}`);
       }
     })
     .catch((err) => {
@@ -106,7 +106,7 @@ export default class Api {
         return res.json()
       }
       else {
-        return new Error('Ошибка')
+        return Promise.reject(`Ошибка: ${res.status}`);
       }
     })
     .catch((err) => {
@@ -128,7 +128,7 @@ export default class Api {
         return res.json()
       }
       else {
-        return new Error('Ошибка')
+        return Promise.reject(`Ошибка: ${res.status}`);
       }
     })
     .catch((err) => {
@@ -150,7 +150,7 @@ export default class Api {
         return res.json()
       }
       else {
-        return new Error('Ошибка')
+        return Promise.reject(`Ошибка: ${res.status}`);
       }
     })
     .catch((err) => {
@@ -175,7 +175,7 @@ export default class Api {
         return res.json()
       }
       else {
-        return new Error('Ошибка')
+        return Promise.reject(`Ошибка: ${res.status}`);
       }
     })
     .catch((err) => {
