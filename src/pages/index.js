@@ -49,10 +49,12 @@ function handleElementDelete(item, cardId) {
 
 function handleAddAvatar(value) {
   popupAvatar.saving(true)
-  api.setAvatar(value).then(res => {
+  api.setAvatar(value)
+  .then(res => {
     userInfo.setAvatar(res);
     popupAvatar.close();
     formValidatorAvatar.resetValidation()
+  }).catch((err) => {console.log(err);
   }).finally(() => {popupAvatar.saving(false)})
 }
 
@@ -62,6 +64,7 @@ const addCard = (values) => {
     handleLikeCard: () => {
       return api.likeCard(card._cardId)
         .then(res => {card.addLike(res)})
+
     },
     handleUnLikeCard: () => {
       return api.unLikeCard(card._cardId)
@@ -82,7 +85,7 @@ const createCard = new Section({
 
 const handleEditSubmit = (values) => {
   popupProfile.saving(true)
-  api.editInfo(values).finally(()=>{popupProfile.saving(false)})
+  api.editInfo(values).catch((err) => {console.log(err)}).finally(()=>{popupProfile.saving(false)})
   userInfo.setUserInfo(values)
   popupProfile.close();
 }
@@ -92,7 +95,7 @@ const handleElementAddSubmit = (values) => {
   api.addCard(values).then(res => {
     const card = addCard(res);
     createCard.addItem(card);
-  }).finally(()=> {popupAddPhoto.saving(false)})
+  }).catch((err) => {console.log(err)}).finally(()=> {popupAddPhoto.saving(false)})
   popupAddPhoto.close();
 };
 
@@ -117,7 +120,7 @@ const handleCardClick = (name, link) => {
 
 api.getImages().then(data => {
   createCard.renderItems(data);
-})
+}).catch((err) => {console.log(err)})
 
 
 api.getProfileInfo().then(res => {
@@ -128,7 +131,7 @@ api.getProfileInfo().then(res => {
   }
   userInfo.setUserInfo(newInfo)
   userInfo.setAvatar(newInfo)
-})
+}).catch((err) => {console.log(err)})
 
 
 profileEditBtn.addEventListener('click', function () {
@@ -136,7 +139,7 @@ profileEditBtn.addEventListener('click', function () {
   api.getProfileInfo().then(data => {
     inputName.value = data.name;
     inputJob.value = data.about
-  })
+  }).catch((err) => {console.log(err)})
   formValidatorEdit.resetValidation();
 });
 
