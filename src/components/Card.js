@@ -18,13 +18,13 @@ class Card {
   }
 
   addLike(el) {
-    this._elementsItem.querySelector(this._settings.elementLike).classList.add(this._settings.elementLikeActive)
-    this._elementsItem.querySelector('.elements__counter').textContent = el.likes.length
+    this._likeEl.classList.add(this._settings.elementLikeActive)
+    this._likesCounter.textContent = el.likes.length
   }
 
   deleteLike(el) {
-    this._elementsItem.querySelector(this._settings.elementLike).classList.remove(this._settings.elementLikeActive)
-    this._elementsItem.querySelector('.elements__counter').textContent = el.likes.length
+    this._likeEl.classList.remove(this._settings.elementLikeActive)
+    this._likesCounter.textContent = el.likes.length
   }
 
   _isHaveMyLike(el) {
@@ -66,7 +66,8 @@ class Card {
     this._elementsImage.src = this._link;
     this._elementsImage.alt = this._name;
     this._elementsItem.querySelector(this._settings.elementTitle).textContent = this._name;
-    this._elementsItem.querySelector('.elements__counter').textContent = this._likes;
+    this._likesCounter = this._elementsItem.querySelector('.elements__counter')
+    this._likesCounter.textContent = this._likes;
     this._isOwner();
     if (this._isHaveMyLike(this._el)) {
       this._elementsItem.querySelector('.elements__like').classList.add(this._settings.elementLikeActive)
