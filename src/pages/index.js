@@ -24,6 +24,11 @@ const profileOvelay = document.querySelector('.profile__foto_type_overlay');
 
 const api = new Api('https://nomoreparties.co', '83d4c574-f43f-43fb-a250-62d63411e3fe');
 
+let myId;
+api.getProfileInfo()
+  .then(res => { return myId = res._id })
+  .catch((err) => { console.log(err) })
+
 // function renderLoading(isLoading) {
 //   if (isLoading) {
 //     spinner.classList.add('spinner_visible');
@@ -35,9 +40,12 @@ const api = new Api('https://nomoreparties.co', '83d4c574-f43f-43fb-a250-62d6341
 // }
 
 function handleDelete(obj) {
-  api.deleteCard(obj._cardId).then(()=>{
-    obj.deleteCard();
-    this.close()})
+  api.deleteCard(obj._cardId)
+    .then(() => {
+      obj.deleteCard();
+      this.close()
+    })
+    .catch((err) => { console.log(err) })
 }
 
 function handleElementDelete(obj) {
@@ -48,53 +56,62 @@ function handleElementDelete(obj) {
 function handleAddAvatar(value) {
   popupAvatar.saving(true)
   api.setAvatar(value)
-  .then(res => {
-    userInfo.setAvatar(res);
-    popupAvatar.close();
-    formValidatorAvatar.resetValidation()
-  }).catch((err) => {console.log(err);
-  }).finally(() => {popupAvatar.saving(false)})
+    .then(res => {
+      userInfo.setAvatar(res);
+      popupAvatar.close();
+    }).catch((err) => {
+      console.log(err);
+    }).finally(() => { popupAvatar.saving(false) })
 }
 
 
 const addCard = (values) => {
-  const card = new Card(values, '.elements__template', handleCardClick, cardSettings, handleElementDelete, '7f1f5eb28cfd1a3c985ee513', {
+  const card = new Card(values, '.elements__template', handleCardClick, cardSettings, handleElementDelete, myId, {
     handleLikeCard: () => {
       return api.likeCard(card._cardId)
-        .then(res => {card.addLike(res)})
+        .then(res => { card.addLike(res) })
+        .catch((err) => { console.log(err) })
 
     },
     handleUnLikeCard: () => {
       return api.unLikeCard(card._cardId)
-        .then(res => {card.deleteLike(res)})
+        .then(res => { card.deleteLike(res) })
+        .catch((err) => { console.log(err) })
     }
   })
   return card.createElements()
 }
 
-const sectionRenderer = (el) => {
+const renderCardSection = (el) => {
   const cardEl = addCard(el)
-  createCard.addItem(cardEl);
+  cardSection.addItem(cardEl);
 }
 
-const createCard = new Section({
-  renderer: sectionRenderer
+const cardSection = new Section({
+  renderer: renderCardSection
 }, '.elements');
 
 const handleEditSubmit = (values) => {
   popupProfile.saving(true)
-  api.editInfo(values).catch((err) => {console.log(err)}).finally(()=>{popupProfile.saving(false)})
-  userInfo.setUserInfo(values)
-  popupProfile.close();
+  api.editInfo(values)
+    .then(res => {
+      userInfo.setUserInfo(res)
+      popupProfile.close();
+    })
+    .catch((err) => { console.log(err) })
+    .finally(() => { popupProfile.saving(false) })
 }
 
 const handleElementAddSubmit = (values) => {
   popupAddPhoto.saving(true)
-  api.addCard(values).then(res => {
-    const card = addCard(res);
-    createCard.addItem(card);
-  }).catch((err) => {console.log(err)}).finally(()=> {popupAddPhoto.saving(false)})
-  popupAddPhoto.close();
+  api.addCard(values)
+    .then(res => {
+      const card = addCard(res);
+      cardSection.addItem(card);
+      popupAddPhoto.close();
+    }).catch((err) => { console.log(err) })
+    .finally(() => { popupAddPhoto.saving(false) })
+
 };
 
 
@@ -117,28 +134,11 @@ const handleCardClick = (name, link) => {
   popupPhoto.open(name, link)
 }
 
-api.getImages().then(data => {
-  createCard.renderItems(data);
-}).catch((err) => {console.log(err)})
-
-
-api.getProfileInfo().then(res => {
-  const newInfo = {
-    name: res.name,
-    job: res.about,
-    avatar: res.avatar
-  }
-  userInfo.setUserInfo(newInfo)
-  userInfo.setAvatar(newInfo)
-}).catch((err) => {console.log(err)})
-
 
 profileEditBtn.addEventListener('click', function () {
   popupProfile.open();
-  api.getProfileInfo().then(data => {
-    inputName.value = data.name;
-    inputJob.value = data.about
-  }).catch((err) => {console.log(err)})
+  inputName.value = userInfo.getUserInfo().name
+  inputJob.value = userInfo.getUserInfo().job
   formValidatorEdit.resetValidation();
 });
 
@@ -150,6 +150,7 @@ profileAddBtn.addEventListener('click', () => {
 
 profileOvelay.addEventListener('click', () => {
   popupAvatar.open()
+  formValidatorAvatar.resetValidation()
 })
 
 
@@ -164,4 +165,15 @@ formValidatorEdit.enableValidation();
 formValidatorAdd.enableValidation();
 formValidatorAvatar.enableValidation();
 
-// Promise.all()
+Promise.all([api.getImages(), api.getProfileInfo()])
+  .then(([data, values]) => {
+    cardSection.renderItems(data);
+    const newInfo = {
+      name: values.name,
+      about: values.about,
+      avatar: values.avatar
+    }
+    userInfo.setUserInfo(newInfo)
+    userInfo.setAvatar(newInfo)
+  })
+  .catch((err) => { console.log(err) })
