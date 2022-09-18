@@ -5,13 +5,8 @@ export default class Section {
     this.container = document.querySelector(selector)
   }
 
-  // setItems(data) {
-  //   this.renderedItems = data
-  // }
-
   renderItems(data) {
-    this.renderedItems = data
-    this.renderedItems.reverse().forEach(item => {
+    data.reverse().forEach(item => {
       this.renderer(item)
     });
   }

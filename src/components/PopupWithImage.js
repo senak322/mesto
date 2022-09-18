@@ -15,7 +15,4 @@ export default class PopupWithImage extends Popup {
     this._popupPlace.textContent = name;
   }
 
-  handleCardClick(name, link) {
-    this.open(name, link)
-  }
 }

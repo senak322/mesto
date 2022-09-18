@@ -7,7 +7,6 @@ import PopupWithForm from '../components/PopupWithForm.js';
 import PopupWithImage from '../components/PopupWithImage.js';
 import FormValidator from '../components/FormValidator.js';
 import PopupWithDelete from '../components/PopupWithDelete.js';
-import PopupWithAvatar from '../components/PopupWithAvatar.js'
 import UserInfo from '../components/UserInfo.js';
 import Api from '../components/Api.js';
 
@@ -35,16 +34,15 @@ const api = new Api('https://nomoreparties.co', '83d4c574-f43f-43fb-a250-62d6341
 //   }
 // }
 
-function handleDelete() {
-  api.deleteCard(this._cardId);
-  this._item.remove();
-  this._item = null;
-  this.close();
+function handleDelete(obj) {
+  api.deleteCard(obj._cardId).then(()=>{
+    obj.deleteCard();
+    this.close()})
 }
 
-function handleElementDelete(item, cardId) {
+function handleElementDelete(obj) {
   popupDelete.open();
-  popupDelete.setElem(item, cardId)
+  popupDelete.setElem(obj)
 };
 
 function handleAddAvatar(value) {
@@ -107,7 +105,8 @@ const userInfo = new UserInfo({ nameSelector: '.profile__name', jobSelector: '.p
 
 const popupProfile = new PopupWithForm('.popup_type_edit', handleEditSubmit);
 const popupDelete = new PopupWithDelete('.popup_type_delete', handleDelete);
-const popupAvatar = new PopupWithAvatar('.popup_type_avatar', handleAddAvatar);
+const popupAvatar = new PopupWithForm('.popup_type_avatar', handleAddAvatar);
+
 
 const formValidatorEdit = new FormValidator(validationSettings, popupFormProfileEdit);
 const formValidatorAdd = new FormValidator(validationSettings, popupFormAdd);
@@ -115,7 +114,7 @@ const formValidatorAvatar = new FormValidator(validationSettings, popupFormAvata
 
 
 const handleCardClick = (name, link) => {
-  popupPhoto.handleCardClick(name, link)
+  popupPhoto.open(name, link)
 }
 
 api.getImages().then(data => {

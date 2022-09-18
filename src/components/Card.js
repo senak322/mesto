@@ -17,6 +17,12 @@ class Card {
 
   }
 
+  deleteCard() {
+    this._elementsItem.remove();
+    this._elementsItem = null;
+
+  }
+
   addLike(el) {
     this._likeEl.classList.add(this._settings.elementLikeActive)
     this._likesCounter.textContent = el.likes.length
@@ -48,7 +54,7 @@ class Card {
   _addEventListeners() {
     this._likeEl = this._elementsItem.querySelector(this._settings.elementLike)
     this._likeEl.addEventListener('click', () => {this.checkLikes(this._likeEl)});
-    this._elementsItem.querySelector(this._settings.elementDelete).addEventListener('click', () => {this._handleElementDelete(this._elementsItem, this._cardId)});
+    this._elementsItem.querySelector(this._settings.elementDelete).addEventListener('click', () => {this._handleElementDelete(this)});
     this._elementsImage.addEventListener('click', () => {
       this._handleCardClick(this._name, this._link);
     });

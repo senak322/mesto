@@ -8,15 +8,14 @@ export default class PopupWithDelete extends Popup {
 
   }
 
-  setElem(item, cardId) {
-    this._cardId = cardId;
-    this._item = item
+  setElem(obj) {
+    this._obj = obj
   }
 
   setEventListeners() {
     super.setEventListeners();
     this._deleteBtn.addEventListener('click', () => {
-      this._handleDelete(this._item, this._cardId)
+      this._handleDelete(this._obj)
     })
   }
 }
